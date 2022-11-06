@@ -141,12 +141,12 @@ function App() {
       <Counter />
       <ColorBox/> */}
       {/* <AddColor/> */}
-      <div className='book-list'>
+      {/* <div className='book-list'>
       {bookList.map((bk) => (
         <Book book={bk}/>
       ))}
       </div>
-    
+     */}
     </div>
   );
   //JSX Ends
