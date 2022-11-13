@@ -6,7 +6,7 @@ import { Counter } from "./Counter";
 //const [state, setState] = useState(InitialValue)
 //const [like, setLike ] = useState(0)
 //state of art technology, state of mind - meaning
-function Msg({ name, pic }) {
+export function Msg({ name, pic }) {
   return (
     <div className='user-container'>
       <img className="profile-pic" src={pic} alt={name + "Be Happy"} />

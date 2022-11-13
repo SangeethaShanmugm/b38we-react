@@ -23,8 +23,8 @@ export function AddColor() {
         {/* // copy the colorList and add newColor to it */}
         <button onClick={() => setColorList([...colorList, color])}>Add Color</button>
       </div>
-      {colorList.map((clr) => (
-        <ColorBox color={clr} />
+      {colorList.map((clr, index) => (
+        <ColorBox key={index} color={clr} />
       ))}
 
 
