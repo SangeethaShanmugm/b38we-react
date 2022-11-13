@@ -170,6 +170,20 @@ function BookList() {
   const [summary, setSummary] = useState("")
   const [trailer, setTrailer] = useState("")
 
+
+   const handleSubmit = () => {
+    const newBook = {
+    name: name,
+    poster: poster,
+    rating: rating,
+    summary: summary,
+    trailer: trailer,
+  }
+    // Copy the bookList and add newBook to it
+    setBookList([...bookList, newBook ])
+  }
+
+
   return (
     <div className="add-book-form">
       <input
@@ -193,17 +207,7 @@ function BookList() {
         onChange={(event) => setTrailer(event.target.value)}
         placeholder="Enter a Trailer"
       />
-  <button onClick={() => {
-    const newBook = {
-    name: name,
-    poster: poster,
-    rating: rating,
-    summary: summary,
-    trailer: trailer,
-  }
-    // Copy the bookList and add newBook to it
-    setBookList([...bookList, newBook ])
-  }}  >Add Book</button>
+  <button onClick={handleSubmit} >Add Book</button>
       <div className="book-list">
         {bookList.map((bk, index) => (
           <Book key={index} book={bk} id={index} />
