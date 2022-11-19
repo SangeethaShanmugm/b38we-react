@@ -1,18 +1,14 @@
 import "./App.css";
 import { useState } from "react";
-
 import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
 import { AddColor } from "./AddColor";
 import { ColorBox } from "./ColorBox"; //named import
 import { Book } from "./Book";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
-// import ColorBox from "./ColorBox"; //default import
-// import double from "./ColorBox";
-// import triple from "./ColorBox";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
-// console.log(double(10))
-// console.log(triple(10))
 
 const INITIAL_BOOK_LIST = [
   {
@@ -76,51 +72,13 @@ const INITIAL_BOOK_LIST = [
 ];
 
 function App() {
-  //JS starts
-  //  const name = "Anchal";
-  //  const name1 = "Arjun";
+ //Lifting the state up -> Lifted from child to parent 
+  const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
 
-  //Array of strings
-  const people = ["Anchal", "Arjun", "Abirami", "Sivanesh", "Sophia", "sowmya"];
-
-  // JS ends
+  
   //JSX starts
   return (
-    <div className="App">
-      {/* {users.map((user) => 
-      <Msg name={user.name} pic={user.pic}  />    
-      )} */}
-
-      {/* <h1>Hello {name} 🥳😀 </h1>
-      <h1>Hello {name1} 🥳😀 </h1> */}
-      {/* <Welcome name={people[0]} />
-      <Welcome name={people[1]} />
-      <Welcome name={people[2]} />
-      <Welcome name={people[3]} /> */}
-
-      {/* {people.map(personName =>  <Welcome name={personName} />  )} */}
-
-      {/* <Msg
-        name="Sowmya"
-        pic="https://www.unigreet.com/wp-content/uploads/2020/04/Smiley-816x1024.jpg"
-      />
-      <Msg
-        name="Anchal"
-        pic="http://www.goodmorningimagesdownload.com/wp-content/uploads/2020/05/Profile-Picture-7.jpg"
-      />
-      <Msg
-        name="Gokul"
-        pic="https://i0.wp.com/mytechoffer.com/wp-content/uploads/2022/05/2e2fac9d4a392456e511345021592dd2.jpeg?resize=708%2C894&ssl=1"
-      /> */}
-
-      {/* <Welcome name="Arjun" age="26" />
-      <Welcome name="Gokul" age="26" /> */}
-      {/* <Counter />
-      <Counter />
-      <ColorBox/> */}
-      {/* <AddColor/> */}
-
-      {/* <BookList/> */}
+    <div className="App">     
       <nav>
         <ul>
           <li>
@@ -143,9 +101,9 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BookList />} />
+        <Route path="/book" element={<BookList bookList={bookList} setBookList={setBookList} />} />
         {/* dynamically matching route */}
-        <Route path="/book/:bookid" element={<BookDetail />} />
+        <Route path="/book/:bookid" element={<BookDetail bookList={bookList} />} />
         <Route path="/addcolor" element={<AddColor />} />
         <Route path="/user" element={<UserList />} />
       </Routes>
@@ -154,60 +112,82 @@ function App() {
   //JSX Ends
 }
 
-function BookDetail() {
+function BookDetail({ bookList }) {
   const { bookid } = useParams();
+  const book = bookList[bookid]
+console.log(book.name)
 
-  return <div>Movie detail page of {bookid}</div>;
+
+  return <div>Movie detail page of name -{book.name} rating -{book.rating} summary -{book.summary}</div>;
 }
 
-function BookList() {
-
+function BookList({ bookList,setBookList }) {
   // const bookList = INITIAL_BOOK_LIST;
-  const [bookList, setBookList] = useState(INITIAL_BOOK_LIST)
+  // const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
   const [name, setName] = useState("");
   const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("")
-  const [summary, setSummary] = useState("")
-  const [trailer, setTrailer] = useState("")
+  const [rating, setRating] = useState("");
+  const [summary, setSummary] = useState("");
+  const [trailer, setTrailer] = useState("");
 
-
-   const handleSubmit = () => {
+  const handleSubmit = () => {
     const newBook = {
-    name: name,
-    poster: poster,
-    rating: rating,
-    summary: summary,
-    trailer: trailer,
-  }
+      name: name,
+      poster: poster,
+      rating: rating,
+      summary: summary,
+      trailer: trailer,
+    };
     // Copy the bookList and add newBook to it
-    setBookList([...bookList, newBook ])
-  }
-
+    setBookList([...bookList, newBook]);
+  };
 
   return (
     <div className="add-book-form">
-      <input
-        onChange={(event) => setName(event.target.value)}
+      <TextField
+        id="outlined-basic"
+        label="Name"
+        variant="outlined"
         placeholder="Enter a Name"
-      />
-      <input
-        onChange={(event) => setPoster(event.target.value)}
-        placeholder="Enter a Poster"
-      />
-      <input
-        onChange={(event) => setRating(event.target.value)}
-        placeholder="Enter a Rating"
+        onChange={(event) => setName(event.target.value)}
       />
 
-      <input
-        onChange={(event) => setSummary(event.target.value)}
+      {/* <input
+        onChange={(event) => setName(event.target.value)}
+        placeholder="Enter a Name"
+      /> */}
+      <TextField
+        id="outlined-basic"
+        label="Poster"
+        variant="outlined"
+        placeholder="Enter a Poster"
+        onChange={(event) => setPoster(event.target.value)}
+      />
+      <TextField
+        id="outlined-basic"
+        label="Rating"
+        variant="outlined"
+        placeholder="Enter a Rating"
+        onChange={(event) => setRating(event.target.value)}
+      />
+      <TextField
+        id="outlined-basic"
+        label="Summary"
+        variant="outlined"
         placeholder="Enter a Summary"
+        onChange={(event) => setSummary(event.target.value)}
       />
-      <input
-        onChange={(event) => setTrailer(event.target.value)}
+      <TextField
+        id="outlined-basic"
+        label="Trailer"
+        variant="outlined"
         placeholder="Enter a Trailer"
+        onChange={(event) => setTrailer(event.target.value)}
       />
-  <button onClick={handleSubmit} >Add Book</button>
+      {/* <Button variant="contained">Add Book</Button> */}
+      <Button onClick={handleSubmit} variant="contained">
+        Add Book
+      </Button>
       <div className="book-list">
         {bookList.map((bk, index) => (
           <Book key={index} book={bk} id={index} />
