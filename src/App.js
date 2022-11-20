@@ -1,14 +1,13 @@
 import "./App.css";
 import { useState } from "react";
-import { Routes, Route, Link, useNavigate, useParams } from "react-router-dom";
+import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
 import { AddColor } from "./AddColor";
 import { ColorBox } from "./ColorBox"; //named import
-import { Book } from "./Book";
 import { UserList } from "./UserList";
 import { Home } from "./Home";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-
+import { BookList } from "./BookList";
+import { BookDetail } from "./BookDetail";
+import { NotFoundPage } from "./NotFoundPage";
 
 const INITIAL_BOOK_LIST = [
   {
@@ -26,6 +25,7 @@ const INITIAL_BOOK_LIST = [
     rating: 7,
     summary:
       "Your subconscious mind is a powerful force to be reckoned with. It makes up around 95% of your brain power and handles everything your body needs to function properly, from eating and breathing to digesting and making memories",
+    trailer: "https://www.youtube.com/embed/Solb9uA-tgQ",
   },
   {
     name: "Attitude is everything ",
@@ -72,13 +72,12 @@ const INITIAL_BOOK_LIST = [
 ];
 
 function App() {
- //Lifting the state up -> Lifted from child to parent 
+  //Lifting the state up -> Lifted from child to parent
   const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
 
-  
   //JSX starts
   return (
-    <div className="App">     
+    <div className="App">
       <nav>
         <ul>
           <li>
@@ -100,102 +99,43 @@ function App() {
         </ul>
       </nav>
       <Routes>
+      {/* //DRY - Do not repeat yourself */}
         <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BookList bookList={bookList} setBookList={setBookList} />} />
+        <Route
+          path="/book"
+          element={<BookList bookList={bookList} setBookList={setBookList} />}
+        />
         {/* dynamically matching route */}
-        <Route path="/book/:bookid" element={<BookDetail bookList={bookList} />} />
+        <Route
+          path="/book/:bookid"
+          element={<BookDetail bookList={bookList} />}
+        />
         <Route path="/addcolor" element={<AddColor />} />
         <Route path="/user" element={<UserList />} />
+        <Route
+          path="/novel"
+          element={<Navigate replace to="/book" />}
+        />
+         <Route
+          path="/404"
+          element={<NotFoundPage  />}
+        />
+        <Route path="*" element={<Navigate replace to="/404"  />} />
       </Routes>
     </div>
   );
   //JSX Ends
 }
 
-function BookDetail({ bookList }) {
-  const { bookid } = useParams();
-  const book = bookList[bookid]
-console.log(book.name)
+// Task - 15 mins
+// /book/add  -> <AddBook />
+//Add Book -> Book added  -> /book (book list page)
 
-
-  return <div>Movie detail page of name -{book.name} rating -{book.rating} summary -{book.summary}</div>;
+function AddBook(){
+  return <div>Add Book 🥳</div>
 }
 
-function BookList({ bookList,setBookList }) {
-  // const bookList = INITIAL_BOOK_LIST;
-  // const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
-  const [name, setName] = useState("");
-  const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("");
-  const [summary, setSummary] = useState("");
-  const [trailer, setTrailer] = useState("");
 
-  const handleSubmit = () => {
-    const newBook = {
-      name: name,
-      poster: poster,
-      rating: rating,
-      summary: summary,
-      trailer: trailer,
-    };
-    // Copy the bookList and add newBook to it
-    setBookList([...bookList, newBook]);
-  };
-
-  return (
-    <div className="add-book-form">
-      <TextField
-        id="outlined-basic"
-        label="Name"
-        variant="outlined"
-        placeholder="Enter a Name"
-        onChange={(event) => setName(event.target.value)}
-      />
-
-      {/* <input
-        onChange={(event) => setName(event.target.value)}
-        placeholder="Enter a Name"
-      /> */}
-      <TextField
-        id="outlined-basic"
-        label="Poster"
-        variant="outlined"
-        placeholder="Enter a Poster"
-        onChange={(event) => setPoster(event.target.value)}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Rating"
-        variant="outlined"
-        placeholder="Enter a Rating"
-        onChange={(event) => setRating(event.target.value)}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Summary"
-        variant="outlined"
-        placeholder="Enter a Summary"
-        onChange={(event) => setSummary(event.target.value)}
-      />
-      <TextField
-        id="outlined-basic"
-        label="Trailer"
-        variant="outlined"
-        placeholder="Enter a Trailer"
-        onChange={(event) => setTrailer(event.target.value)}
-      />
-      {/* <Button variant="contained">Add Book</Button> */}
-      <Button onClick={handleSubmit} variant="contained">
-        Add Book
-      </Button>
-      <div className="book-list">
-        {bookList.map((bk, index) => (
-          <Book key={index} book={bk} id={index} />
-        ))}
-      </div>
-    </div>
-  );
-}
 export default App;
 
 //Import and export 2 types
@@ -217,3 +157,16 @@ export default App;
 //Add Book - like Add Color
 // book - name, poster, rating, summary, trailer - 5 input boxes
 // Add Book - button
+
+//Lifting the state up
+
+// BookList(data) - Book(data) - Counter(data)
+
+//          - contact(data)
+
+//React flows in one direction - unidirectional - parent to child you can pass data -✅
+// not from child to parent  - ❌
+
+//                          App(parent)(data)
+
+//           BookList (child)             BookDetail(child)

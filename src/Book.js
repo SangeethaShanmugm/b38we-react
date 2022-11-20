@@ -54,7 +54,7 @@ export function Book({ book, id }) {
       </IconButton>
       {/* //info icon */}
       <IconButton
-        onClick={() => navigate("/book/" + id)}
+        onClick={() => navigate(`/book/${id}`)} 
         aria-label="toggle-description"
         color="primary"
       >
