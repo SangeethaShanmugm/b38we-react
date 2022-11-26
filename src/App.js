@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import { AddColor } from "./AddColor";
 import { ColorBox } from "./ColorBox"; //named import
 import { UserList } from "./UserList";
@@ -8,6 +8,15 @@ import { Home } from "./Home";
 import { BookList } from "./BookList";
 import { BookDetail } from "./BookDetail";
 import { NotFoundPage } from "./NotFoundPage";
+import { AddBook } from "./AddBook";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import Paper from '@mui/material/Paper';
 
 const INITIAL_BOOK_LIST = [
   {
@@ -71,70 +80,82 @@ const INITIAL_BOOK_LIST = [
   },
 ];
 
+// 1. Creating - createContext
+// 2. Publisher - provider - context.Provider
+// 3. Subscriber - useContext - useContext(context)
+
 function App() {
   //Lifting the state up -> Lifted from child to parent
   const [bookList, setBookList] = useState(INITIAL_BOOK_LIST);
+  const [mode, setMode] = useState("light");
+  const theme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+  const navigate = useNavigate();
 
   //JSX starts
   return (
-    <div className="App">
-      <nav>
-        <ul>
-          <li>
-            {/* Link change page without refresh */}
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/book">Books</Link>
-          </li>
-          <li>
-            <Link to="/addcolor">Add Color</Link>
-          </li>
-          <li>
-            <Link to="/user">User List</Link>
-          </li>
-          <li>
-            <Link to="/somewhere">Somewhere</Link>
-          </li>
-        </ul>
-      </nav>
-      <Routes>
-      {/* //DRY - Do not repeat yourself */}
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/book"
-          element={<BookList bookList={bookList} setBookList={setBookList} />}
-        />
-        {/* dynamically matching route */}
-        <Route
-          path="/book/:bookid"
-          element={<BookDetail bookList={bookList} />}
-        />
-        <Route path="/addcolor" element={<AddColor />} />
-        <Route path="/user" element={<UserList />} />
-        <Route
-          path="/novel"
-          element={<Navigate replace to="/book" />}
-        />
-         <Route
-          path="/404"
-          element={<NotFoundPage  />}
-        />
-        <Route path="*" element={<Navigate replace to="/404"  />} />
-      </Routes>
-    </div>
+    <ThemeProvider theme={theme}>
+       <Paper elevation={4} />   
+      <CssBaseline />    
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <Button color="inherit" onClick={() => navigate("/")}>
+              Home
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/book")}>
+              Books
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/addcolor")}>
+              Add Color
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/user")}>
+              User List
+            </Button>
+            <Button color="inherit" onClick={() => navigate("/book/add")}>
+              AddBook
+            </Button>
+            <Button
+            startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+              color="inherit"
+              onClick={() => setMode(mode === "light" ? "dark" : "light")}
+            >
+              {mode === "light" ? "dark" : "light"} mode
+            </Button>
+          </Toolbar>
+        </AppBar>
+
+        <Routes>
+          {/* //DRY - Do not repeat yourself */}
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/book"
+            element={<BookList bookList={bookList} setBookList={setBookList} />}
+          />
+          {/* dynamically matching route */}
+          <Route
+            path="/book/:bookid"
+            element={<BookDetail bookList={bookList} />}
+          />
+          <Route
+            path="/book/add"
+            element={<AddBook bookList={bookList} setBookList={setBookList} />}
+          />
+          <Route path="/addcolor" element={<AddColor />} />
+          <Route path="/user" element={<UserList />} />
+          <Route path="/novel" element={<Navigate replace to="/book" />} />
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<Navigate replace to="/404" />} />
+        </Routes>
+      </div>
+      <Paper />
+    </ThemeProvider>
   );
   //JSX Ends
 }
-
-// Task - 15 mins
-// /book/add  -> <AddBook />
-//Add Book -> Book added  -> /book (book list page)
-
-function AddBook(){
-  return <div>Add Book 🥳</div>
-}
-
 
 export default App;
 
@@ -170,3 +191,27 @@ export default App;
 //                          App(parent)(data)
 
 //           BookList (child)             BookDetail(child)
+
+//  {/* <nav>
+//         <ul>
+//           <li>
+//             Link change page without refresh
+//             <Link to="/">Home</Link>
+//           </li>
+//           <li>
+//             <Link to="/book">Books</Link>
+//           </li>
+//           <li>
+//             <Link to="/addcolor">Add Color</Link>
+//           </li>
+//           <li>
+//             <Link to="/user">User List</Link>
+//           </li>
+//           <li>
+//             <Link to="/somewhere">Somewhere</Link>
+//           </li>
+//           <li>
+//             <Link to="/book/add">AddBook</Link>
+//           </li>
+//         </ul>
+//       </nav> */}

@@ -10,10 +10,10 @@ export function BookDetail({ bookList }) {
   console.log(book);
   console.log(book.name);
   console.log(book.summary);
-if(!book){
-  // navigate ("/404")
-  return <NotFoundPage />;
-}
+  if (!book) {
+    // navigate ("/404")
+    return <NotFoundPage />;
+  }
 
   return (
     <div>
