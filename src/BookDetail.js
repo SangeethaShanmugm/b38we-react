@@ -1,19 +1,33 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import Button from "@mui/material/Button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { NotFoundPage } from "./NotFoundPage";
+import { API } from "./global";
 
-export function BookDetail({ bookList }) {
+export function BookDetail() {
   const { bookid } = useParams();
   const navigate = useNavigate();
-  const book = bookList[bookid];
-  console.log(book);
-  console.log(book.name);
-  console.log(book.summary);
-  if (!book) {
-    // navigate ("/404")
-    return <NotFoundPage />;
-  }
+  const [book, setBook] = useState({});
+  // const book = bookList[bookid];
+  // console.log(book);
+  // console.log(book.name);
+  // console.log(book.summary);
+  // if (!book) {
+  //   // navigate ("/404")
+  //   return <NotFoundPage />;
+  // }
+
+  useEffect(() => {
+    fetch(`${API}/book/${bookid}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((bk) => {
+        setBook(bk);
+      });
+  }, []);
 
   return (
     <div>

@@ -7,7 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
 //BookApp
 // book title, poster, summary, rating
-export function Book({ book, id }) {
+export function Book({ book, id, deleteButton }) {
   const navigate = useNavigate();
   // const book = {
   //   name: "The charlotte's web",
@@ -54,7 +54,7 @@ export function Book({ book, id }) {
       </IconButton>
       {/* //info icon */}
       <IconButton
-        onClick={() => navigate(`/book/${id}`)} 
+        onClick={() => navigate(`/book/${id}`)}
         aria-label="toggle-description"
         color="primary"
       >
@@ -69,6 +69,7 @@ export function Book({ book, id }) {
       {/* conditional rendering */}
       {/* {show ? <p className='book-summary'>{book.summary}</p> : "" }  */}
       <Counter />
+      {deleteButton}
     </div>
   );
 }

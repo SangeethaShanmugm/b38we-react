@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Link, Navigate, useNavigate } from "react-router-dom";
 import { AddColor } from "./AddColor";
 import { ColorBox } from "./ColorBox"; //named import
@@ -14,9 +14,9 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import Paper from '@mui/material/Paper';
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Paper from "@mui/material/Paper";
 
 // const INITIAL_BOOK_LIST = [
 //   {
@@ -96,19 +96,19 @@ function App() {
 
   const navigate = useNavigate();
 
-fetch("https://6382ddea6e6c83b7a987e322.mockapi.io/book")  
-  .then(response => response.json())
-  .then(data => {
-    setBookList(data)
-  }) 
-
-
+  // useEffect(() => {
+  //   fetch("https://6382ddea6e6c83b7a987e322.mockapi.io/book")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //     });
+  // }, []);
 
   //JSX starts
   return (
     <ThemeProvider theme={theme}>
-       <Paper elevation={4} />   
-      <CssBaseline />    
+      <Paper elevation={4} />
+      <CssBaseline />
       <div>
         <AppBar position="static">
           <Toolbar>
@@ -128,7 +128,9 @@ fetch("https://6382ddea6e6c83b7a987e322.mockapi.io/book")
               AddBook
             </Button>
             <Button
-            startIcon={mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+              startIcon={
+                mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />
+              }
               color="inherit"
               onClick={() => setMode(mode === "light" ? "dark" : "light")}
             >
@@ -140,15 +142,9 @@ fetch("https://6382ddea6e6c83b7a987e322.mockapi.io/book")
         <Routes>
           {/* //DRY - Do not repeat yourself */}
           <Route path="/" element={<Home />} />
-          <Route
-            path="/book"
-            element={<BookList bookList={bookList} setBookList={setBookList} />}
-          />
+          <Route path="/book" element={<BookList />} />
           {/* dynamically matching route */}
-          <Route
-            path="/book/:bookid"
-            element={<BookDetail bookList={bookList} />}
-          />
+          <Route path="/book/:bookid" element={<BookDetail />} />
           <Route
             path="/book/add"
             element={<AddBook bookList={bookList} setBookList={setBookList} />}
