@@ -5,9 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { API } from "./global";
 //BookApp
 // book title, poster, summary, rating
-export function Book({ book, id, deleteButton }) {
+export function Book({ book, id, deleteButton, editButton }) {
   const navigate = useNavigate();
   // const book = {
   //   name: "The charlotte's web",
@@ -60,7 +62,6 @@ export function Book({ book, id, deleteButton }) {
       >
         <InfoIcon />
       </IconButton>
-
       {/* <button onClick={() => setShow(!show)}>Toggle Summary</button> */}
       {/* conditional styling */}
       <p style={summaryStyles} className="book-summary">
@@ -69,7 +70,17 @@ export function Book({ book, id, deleteButton }) {
       {/* conditional rendering */}
       {/* {show ? <p className='book-summary'>{book.summary}</p> : "" }  */}
       <Counter />
-      {deleteButton}
+      {/* <IconButton
+        onClick={() => {
+          fetch(`${API}/book/${id}`, {
+            method: "DELETE",
+          });
+        }}
+        color="error"
+      >
+        <DeleteIcon />
+      </IconButton> */}
+      {deleteButton} {editButton}
     </div>
   );
 }

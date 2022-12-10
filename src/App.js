@@ -17,6 +17,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Paper from "@mui/material/Paper";
+import { EditBook } from "./EditBook";
 
 // const INITIAL_BOOK_LIST = [
 //   {
@@ -145,10 +146,8 @@ function App() {
           <Route path="/book" element={<BookList />} />
           {/* dynamically matching route */}
           <Route path="/book/:bookid" element={<BookDetail />} />
-          <Route
-            path="/book/add"
-            element={<AddBook bookList={bookList} setBookList={setBookList} />}
-          />
+          <Route path="/book/add" element={<AddBook />} />
+          <Route path="/book/edit/:bookid" element={<EditBook />} />
           <Route path="/addcolor" element={<AddColor />} />
           <Route path="/user" element={<UserList />} />
           <Route path="/novel" element={<Navigate replace to="/book" />} />

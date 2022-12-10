@@ -1,38 +1,38 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { API } from "./global";
 
-// Task - 15 mins
-// /book/add  -> <AddBook />
-//Add Book -> Book added  -> /book (book list page)
-export function AddBook() {
-  const [name, setName] = useState("");
-  const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("");
-  const [summary, setSummary] = useState("");
-  const [trailer, setTrailer] = useState("");
+export function EditBook() {
+  const [book, setBook] = useState(null);
+
+  const { bookid } = useParams();
   const navigate = useNavigate();
 
-  // const handleSubmit = () => {
-  //   const newBook = {
-  //     name: name,
-  //     poster: poster,
-  //     rating: rating,
-  //     summary: summary,
-  //     trailer: trailer,
-  //   };
-  //   // Copy the bookList and add newBook to it
-  //   // setBookList([...bookList, newBook]);
-  //   // navigate("/book");
-  //   //1. method - POST
-  //   //2. body - data - JSON
-  // };
+  useEffect(() => {
+    fetch(`${API}/book/${bookid}`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((bk) => {
+        setBook(bk);
+      });
+  }, []);
 
+  return book ? <EditBookForm book={book} /> : "Loading...";
+}
+
+function EditBookForm({ book }) {
+  const [name, setName] = useState(book.name);
+  const [poster, setPoster] = useState(book.poster);
+  const [rating, setRating] = useState(book.rating);
+  const [summary, setSummary] = useState(book.summary);
+  const [trailer, setTrailer] = useState(book.trailer);
   return (
     <div className="add-book-form">
       <TextField
+        value={name}
         id="outlined-basic"
         label="Name"
         variant="outlined"
@@ -41,10 +41,11 @@ export function AddBook() {
       />
 
       {/* <input
-                    onChange={(event) => setName(event.target.value)}
-                    placeholder="Enter a Name"
-                  /> */}
+                  onChange={(event) => setName(event.target.value)}
+                  placeholder="Enter a Name"
+                /> */}
       <TextField
+        value={poster}
         id="outlined-basic"
         label="Poster"
         variant="outlined"
@@ -52,6 +53,7 @@ export function AddBook() {
         onChange={(event) => setPoster(event.target.value)}
       />
       <TextField
+        value={rating}
         id="outlined-basic"
         label="Rating"
         variant="outlined"
@@ -59,6 +61,7 @@ export function AddBook() {
         onChange={(event) => setRating(event.target.value)}
       />
       <TextField
+        value={summary}
         id="outlined-basic"
         label="Summary"
         variant="outlined"
@@ -66,6 +69,7 @@ export function AddBook() {
         onChange={(event) => setSummary(event.target.value)}
       />
       <TextField
+        value={trailer}
         id="outlined-basic"
         label="Trailer"
         variant="outlined"
@@ -75,29 +79,29 @@ export function AddBook() {
       {/* <Button variant="contained">Add Book</Button> */}
       <Button
         onClick={() => {
-          const newBook = {
+          const updatedBook = {
             name: name,
             poster: poster,
             rating: rating,
             summary: summary,
             trailer: trailer,
           };
-          //1. method - POST
+          //1. method - PUT and id
           //2. body - data - JSON
           //3 . Headers - JSON
-          fetch(`${API}/book`, {
-            method: "POST",
-            body: JSON.stringify(newBook),
+          fetch(`${API}/book/${book.id}`, {
+            method: "PUT",
+            body: JSON.stringify(updatedBook),
             headers: {
               "Content-Type": "application/json",
             },
           })
             .then((response) => response.json())
-            .then(() => navigate("/book"));
+            .then(() => Navigate("/book"));
         }}
         variant="contained"
       >
-        Add Book
+        SAVE
       </Button>
     </div>
   );

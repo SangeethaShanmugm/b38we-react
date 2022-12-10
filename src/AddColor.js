@@ -19,7 +19,9 @@ export function AddColor() {
       <div className='add-color'>
         <input
           onChange={(event) => setColor(event.target.value)}
-          style={styles} type="text" value={color} />
+          style={styles} 
+          type="text" 
+          value={color} />
         {/* // copy the colorList and add newColor to it */}
         <button onClick={() => setColorList([...colorList, color])}>Add Color</button>
       </div>
