@@ -18,6 +18,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Paper from "@mui/material/Paper";
 import { EditBook } from "./EditBook";
+import { BasicForm } from "./BasicForm";
 
 // const INITIAL_BOOK_LIST = [
 //   {
@@ -128,6 +129,9 @@ function App() {
             <Button color="inherit" onClick={() => navigate("/book/add")}>
               AddBook
             </Button>
+            <Button color="inherit" onClick={() => navigate("/basic-form")}>
+              BasicForm
+            </Button>
             <Button
               startIcon={
                 mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />
@@ -150,6 +154,7 @@ function App() {
           <Route path="/book/edit/:bookid" element={<EditBook />} />
           <Route path="/addcolor" element={<AddColor />} />
           <Route path="/user" element={<UserList />} />
+          <Route path="/basic-form" element={<BasicForm />} />
           <Route path="/novel" element={<Navigate replace to="/book" />} />
           <Route path="/404" element={<NotFoundPage />} />
           <Route path="*" element={<Navigate replace to="/404" />} />

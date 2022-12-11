@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { API } from "./global";
@@ -8,7 +8,6 @@ export function EditBook() {
   const [book, setBook] = useState(null);
 
   const { bookid } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`${API}/book/${bookid}`, {
@@ -29,6 +28,7 @@ function EditBookForm({ book }) {
   const [rating, setRating] = useState(book.rating);
   const [summary, setSummary] = useState(book.summary);
   const [trailer, setTrailer] = useState(book.trailer);
+  const navigate = useNavigate();
   return (
     <div className="add-book-form">
       <TextField
@@ -97,7 +97,7 @@ function EditBookForm({ book }) {
             },
           })
             .then((response) => response.json())
-            .then(() => Navigate("/book"));
+            .then(() => navigate("/book"));
         }}
         variant="contained"
       >
