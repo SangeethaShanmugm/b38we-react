@@ -12,7 +12,7 @@ export function BookList() {
   const [bookList, setBookList] = useState([]);
   const navigate = useNavigate();
   const getBooks = () => {
-    fetch(`${API}/book`, {
+    fetch(`${API}/books`, {
       method: "GET",
     })
       .then((response) => response.json())
@@ -44,7 +44,7 @@ export function BookList() {
             deleteButton={
               <IconButton
                 onClick={() => {
-                  fetch(`${API}/book/${bk.id}`, {
+                  fetch(`${API}/books/${bk.id}`, {
                     method: "DELETE",
                   }).then(() => getBooks());
                 }}

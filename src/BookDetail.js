@@ -20,7 +20,7 @@ export function BookDetail() {
   // }
 
   useEffect(() => {
-    fetch(`${API}/book/${bookid}`, {
+    fetch(`${API}/books/${bookid}`, {
       method: "GET",
     })
       .then((response) => response.json())

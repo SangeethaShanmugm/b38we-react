@@ -60,7 +60,7 @@ export function AddBook() {
 
   const createBook = (newBook) => {
     console.log("createBook", newBook);
-    fetch(`${API}/book`, {
+    fetch(`${API}/books`, {
       method: "POST",
       body: JSON.stringify(newBook),
       headers: {

@@ -10,7 +10,7 @@ export function EditBook() {
   const { bookid } = useParams();
 
   useEffect(() => {
-    fetch(`${API}/book/${bookid}`, {
+    fetch(`${API}/books/${bookid}`, {
       method: "GET",
     })
       .then((response) => response.json())
@@ -89,7 +89,7 @@ function EditBookForm({ book }) {
           //1. method - PUT and id
           //2. body - data - JSON
           //3 . Headers - JSON
-          fetch(`${API}/book/${book.id}`, {
+          fetch(`${API}/books/${book.id}`, {
             method: "PUT",
             body: JSON.stringify(updatedBook),
             headers: {
