@@ -21,7 +21,7 @@ const bookValidationSchema = yup.object({
   poster: yup
     .string()
     .min(4, "Need a longer poster😆")
-    .max(100, "Too much of poster length😆")
+    // .max(100, "Too much of poster length😆")
     .required("Why not fill this poster?😉"),
   rating: yup
     .number()
