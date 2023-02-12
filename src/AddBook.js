@@ -58,17 +58,36 @@ export function AddBook() {
     },
   });
 
-  const createBook = (newBook) => {
+  const createBook = async (newBook) => {
+    console.log(newBook);
+    let payload = [
+      {
+        id: newBook.id,
+        name: newBook.name,
+        poster: newBook.poster,
+        rating: newBook.rating,
+        summary: newBook.summary,
+        language: newBook.language,
+        trailer: newBook.trailer,
+      },
+    ];
+    // console.log(payload);
+    // const book = JSON.stringify(newBook);
+    // console.log(book);
     console.log("createBook", newBook);
-    fetch(`${API}/books`, {
+    const fetchCall = await fetch(`${API}/books`, {
       method: "POST",
-      body: JSON.stringify(newBook),
+      
+      body: payload,
       headers: {
         "Content-Type": "application/json",
       },
-    })
-      .then((data) => data.json())
-      .then(() => navigate("/book"));
+    });
+    console.log(fetchCall);
+    const data = await fetchCall.json();
+    console.log(data);
+    // .then((data) => console.log(data));
+    // data.json().then(() => navigate("/book")));
   };
 
   const navigate = useNavigate();
